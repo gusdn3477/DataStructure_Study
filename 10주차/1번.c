@@ -30,14 +30,14 @@ int main(void) {
 		makeSimplify(str);
 
 		for (p = str; *p != '\0'; p++) {
-			if (*p >= 'A' && *p <= 'Z') // ¾ËÆÄºªÀÇ °æ¿ì, Ãâ·Â
+			if (*p >= 'A' && *p <= 'Z') // ì•ŒíŒŒë²³ì˜ ê²½ìš°, ì¶œë ¥
 				printf("%c", *p);
 
-			else if (*p == '(') { // '(' ÀÎ °æ¿ì
-				push(stack, *p, &top, &max); // '('ÀÇ °æ¿ì, ½ºÅÃ¿¡ Áı¾î³Ö´Â´Ù.
+			else if (*p == '(') { // '(' ì¸ ê²½ìš°
+				push(stack, *p, &top, &max); // '('ì˜ ê²½ìš°, ìŠ¤íƒì— ì§‘ì–´ë„£ëŠ”ë‹¤.
 			}
 
-			else if (*p == ')') { // ')'ÀÇ °æ¿ì, '('À» ¸¸³ª±â Àü ±îÁö ¸ğµÎ Ãâ·ÂÇØÁÖ°í, ¸¶Áö¸·À¸·Î popÀ» ÇØÁà¼­ '('µµ Á¦°ÅÇÑ´Ù.
+			else if (*p == ')') { // ')'ì˜ ê²½ìš°, '('ì„ ë§Œë‚˜ê¸° ì „ ê¹Œì§€ ëª¨ë‘ ì¶œë ¥í•´ì£¼ê³ , ë§ˆì§€ë§‰ìœ¼ë¡œ popì„ í•´ì¤˜ì„œ '('ë„ ì œê±°í•œë‹¤.
 				while (peek(stack, &top) != '(') {
 					c_pop = pop(stack, &top);
 					printf("%c", c_pop);
@@ -46,16 +46,16 @@ int main(void) {
 			}
 
 			else {
-				if (isEmpty(&top) == 1) // ½ºÅÃÀÌ ºñ¾úÀ¸¸é ¹Ù·Î push ÇÑ´Ù.
+				if (isEmpty(&top) == 1) // ìŠ¤íƒì´ ë¹„ì—ˆìœ¼ë©´ ë°”ë¡œ push í•œë‹¤.
 					push(stack, *p, &top, &max);
 
-				else { //±×·¸Áö ¾ÊÀº °æ¿ì,
-					check = peek(stack, &top); // ½ºÅÃÀÇ ÃÖ»óÀ§¿¡ ÀÖ´Â ¿ä¼Ò¸¦ check º¯¼ö¿¡ ´ãÀº µÚ¿¡
-					if (checkPriority(check) >= checkPriority(*p)) { // ¿ì¼±¼øÀ§¸¦ ºñ±³ÇÏ¿© stackÀÇ ÃÖ»óÀ§¿¡ ÀÖ´Â °ÍÀÌ ¿ì¼±¼øÀ§°¡ ³ôÀº °æ¿ì, »©³½ µÚ Ãâ·ÂÇÑ µÚ, push¸¦ ÇØÁØ´Ù.
+				else { //ê·¸ë ‡ì§€ ì•Šì€ ê²½ìš°,
+					check = peek(stack, &top); // ìŠ¤íƒì˜ ìµœìƒìœ„ì— ìˆëŠ” ìš”ì†Œë¥¼ check ë³€ìˆ˜ì— ë‹´ì€ ë’¤ì—
+					if (checkPriority(check) >= checkPriority(*p)) { // ìš°ì„ ìˆœìœ„ë¥¼ ë¹„êµí•˜ì—¬ stackì˜ ìµœìƒìœ„ì— ìˆëŠ” ê²ƒì´ ìš°ì„ ìˆœìœ„ê°€ ë†’ì€ ê²½ìš°, ë¹¼ë‚¸ ë’¤ ì¶œë ¥í•œ ë’¤, pushë¥¼ í•´ì¤€ë‹¤.
 
 						while (checkPriority(check) >= checkPriority(*p) && isEmpty(&top) != 1) {
 							c_pop = pop(stack, &top);
-							if (c_pop == '&' || c_pop == '|') { // &&¿Í ||Àº °¢°¢ &,|·Î Ãà¼ÒµÇ¾úÀ¸¹Ç·Î µÎ ¹ø Ãâ·ÂÇÏ´Â °úÁ¤À» °ÅÄ£´Ù.
+							if (c_pop == '&' || c_pop == '|') { // &&ì™€ ||ì€ ê°ê° &,|ë¡œ ì¶•ì†Œë˜ì—ˆìœ¼ë¯€ë¡œ ë‘ ë²ˆ ì¶œë ¥í•˜ëŠ” ê³¼ì •ì„ ê±°ì¹œë‹¤.
 								printf("%c", c_pop);
 								printf("%c", c_pop);							}
 							else
@@ -65,54 +65,63 @@ int main(void) {
 					}
 
 					else
-						push(stack, *p, &top, &max); // »õ·Î µé¾î°¥ °ÍÀÌ ¿ì¼±¼øÀ§°¡ ³ôÀ¸¸é ±×³É pushÇÑ´Ù.
+						push(stack, *p, &top, &max); // ìƒˆë¡œ ë“¤ì–´ê°ˆ ê²ƒì´ ìš°ì„ ìˆœìœ„ê°€ ë†’ìœ¼ë©´ ê·¸ëƒ¥ pushí•œë‹¤.
 				}
 			}
 		}
 
-		while (isEmpty(&top) != 1) { // ÇÇ¿¬»êÀÚ°¡ ´Ù Ãâ·ÂµÈ µÚ, ½ºÅÃ¿¡ ³²¾ÆÀÖ´Â ¿¬»êÀÚ¸¦ ¸ğµÎ Ãâ·ÂÇØÁØ´Ù.
+		while (isEmpty(&top) != 1) { // í”¼ì—°ì‚°ìê°€ ë‹¤ ì¶œë ¥ëœ ë’¤, ìŠ¤íƒì— ë‚¨ì•„ìˆëŠ” ì—°ì‚°ìë¥¼ ëª¨ë‘ ì¶œë ¥í•´ì¤€ë‹¤.
 			c_pop = pop(stack, &top);
 			if (c_pop == '&' || c_pop == '|') {
 				printf("%c", c_pop);
 				printf("%c", c_pop);
 			}
+			
+			else if (c_pop == 'p'){
+				printf("++");
+			}
+			
+			else if (c_pop == 'n'){
+				printf("--");
+			}
+			
 			else
 				printf("%c", c_pop);
 		}
 		printf("\n");
-		initStack(stack, &max, &top); // ½ºÅÃÀ» ÃÊ±âÈ­ ÇØ ÁØ´Ù.
+		initStack(stack, &max, &top); // ìŠ¤íƒì„ ì´ˆê¸°í™” í•´ ì¤€ë‹¤.
 	}
 	return 0;
 }
 
 void push(char *stack, char c, int *top, int *max) {
 
-	if (*top < *max - 1) { //½ºÅÃÀÇ pop ÀÎµ¦½º°¡ 100 ¹Ì¸¸ÀÎ °æ¿ì¸¸ push¸¦ ÇÑ´Ù.
+	if (*top < *max - 1) { //ìŠ¤íƒì˜ pop ì¸ë±ìŠ¤ê°€ 100 ë¯¸ë§Œì¸ ê²½ìš°ë§Œ pushë¥¼ í•œë‹¤.
 		stack[++(*top)] = c;
 	}
 
 	else
-		printf("½ºÅÃÀÌ °¡µæ Ã¡½À´Ï´Ù.");
+		printf("ìŠ¤íƒì´ ê°€ë“ ì°¼ìŠµë‹ˆë‹¤.");
 }
 
 char pop(char *stack, int *top) {
 
 	char c = stack[*top];
-	if (*top >= 0) { // ½ºÅÃÀÇ topÀÇ ÀÎµ¦½º°¡ 0ÀÎ ÀÌ»ó¿¡¸¸ popÀ» ÇÑ´Ù.
+	if (*top >= 0) { // ìŠ¤íƒì˜ topì˜ ì¸ë±ìŠ¤ê°€ 0ì¸ ì´ìƒì—ë§Œ popì„ í•œë‹¤.
 		return stack[(*top)--];
 	}
 }
 
 char peek(char *stack, int *top) {
 
-	if (*top >= 0) // ½ºÅÃÀÇ top ÀÎµ¦½º°¡ 0ÀÎ ÀÌ»óÀÎ °æ¿ì¸¸ ÇöÀç ¿ä¼Ò¸¦ ¹İÈ¯ÇÑ´Ù.
+	if (*top >= 0) // ìŠ¤íƒì˜ top ì¸ë±ìŠ¤ê°€ 0ì¸ ì´ìƒì¸ ê²½ìš°ë§Œ í˜„ì¬ ìš”ì†Œë¥¼ ë°˜í™˜í•œë‹¤.
 		return stack[*top];
 
 }
 
 void print(char *stack, int *top) {
 
-	for (int i = *top; i >= 0; i--) { // 0ºÎÅÍ top±îÁö Ãâ·ÂÇÑ´Ù.
+	for (int i = *top; i >= 0; i--) { // 0ë¶€í„° topê¹Œì§€ ì¶œë ¥í•œë‹¤.
 		printf("%c", stack[i]);
 	}
 	printf("\n");
@@ -121,10 +130,10 @@ void print(char *stack, int *top) {
 
 int isEmpty(int *top) {
 
-	if (*top < 0) //topÀÌ 0 ¹Ì¸¸ÀÎ °æ¿ì¿£ ½ºÅÃÀÌ ºó °ÍÀÌ¹Ç·Î 1À» ¹İÈ¯ÇÑ´Ù.
+	if (*top < 0) //topì´ 0 ë¯¸ë§Œì¸ ê²½ìš°ì—” ìŠ¤íƒì´ ë¹ˆ ê²ƒì´ë¯€ë¡œ 1ì„ ë°˜í™˜í•œë‹¤.
 		return 1;
 	else
-		return 0; // ±×·¯Áö ¾ÊÀº °æ¿ì, 0À» ¹İÈ¯ÇÑ´Ù.
+		return 0; // ê·¸ëŸ¬ì§€ ì•Šì€ ê²½ìš°, 0ì„ ë°˜í™˜í•œë‹¤.
 }
 
 int checkPriority(char c) {
@@ -156,7 +165,7 @@ int checkPriority(char c) {
 		return 0;
 }
 
-void makeSimplify(char *str) { // ++, --, &&, || °°Àº °æ¿ì ¹®ÀÚ·Î Ã³¸®ÇÏ±â¿¡ ºÒÆíÇÏ¹Ç·Î °°Àº ¹®ÀÚ°¡ µÎ ¹ø ¹İº¹µÇ´Â °æ¿ì ÇÏ³ª·Î ÁÙ¿©ÁÖ´Â ÇÔ¼öÀÌ´Ù.
+void makeSimplify(char *str) { // ++, --, &&, || ê°™ì€ ê²½ìš° ë¬¸ìë¡œ ì²˜ë¦¬í•˜ê¸°ì— ë¶ˆí¸í•˜ë¯€ë¡œ ê°™ì€ ë¬¸ìê°€ ë‘ ë²ˆ ë°˜ë³µë˜ëŠ” ê²½ìš° í•˜ë‚˜ë¡œ ì¤„ì—¬ì£¼ëŠ” í•¨ìˆ˜ì´ë‹¤.
 
 	char *p = NULL;
 	char *q = NULL;
@@ -194,6 +203,6 @@ void makeSimplify(char *str) { // ++, --, &&, || °°Àº °æ¿ì ¹®ÀÚ·Î Ã³¸®ÇÏ±â¿¡ ºÒÆ
 void initStack(char *stack, int *max, int *top) {
 
 	for (int i = *max - 1; i >= 0; i--)
-		stack[i] = '\0'; // stackÀÇ ¸ğµç ¿ä¼ÒµéÀ» '\0'À¸·Î ÃÊ±âÈ­
+		stack[i] = '\0'; // stackì˜ ëª¨ë“  ìš”ì†Œë“¤ì„ '\0'ìœ¼ë¡œ ì´ˆê¸°í™”
 	*top = -1;
 }
